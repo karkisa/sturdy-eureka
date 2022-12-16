@@ -50,7 +50,7 @@ def get_name_extention(path):
     s = s.split('.')
     return s[0]
 
-def action(folder_path, save_path, base_folder = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data'):
+def action(folder_path, save_path, base_folder = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/vid'):
     list_img_paths = os.listdir(folder_path)
     for img_path in list_img_paths:
         minu,sec = get_min_sec(img_path)
@@ -61,7 +61,7 @@ def action(folder_path, save_path, base_folder = '/Users/sagar/Desktop/AI Cap/st
         save_img(vid_path,minu,sec,save_path,name)
 
 def main():
-    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/snapshots/220811/Scarlett'
+    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/snapshots/220901/Scarlett'
     save_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/save_path'
     action(folder_path,save_path)
 
