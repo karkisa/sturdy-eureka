@@ -38,20 +38,11 @@ def get_min_sec(path):
     minutes, seconds = get_significant_diigts(minutes),get_significant_diigts(seconds)
     return minutes, seconds
 
-def get_paths():
-    paths = []
-    paths.append('/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/220813/220813_I2F_S4_U3_DJI0008.MOV')
-    paths.append('/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/220813/220813_I2F_S4_U3_DJI0009.MOV')
-    paths.append( '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/220813/220813_I2F_S4_U3_DJI0010.MOV')
-    return paths
-
-def get_vid_path(img_path,paths):
+def get_vid_path(img_path):
     img_path = img_path.split('.')[0]
-    if img_path[-1]=='8':
-        return paths[0]
-    if img_path[-1]=='9':
-        return paths[1]
-    else : return paths[2]
+    folder = img_path.split('_')[0]
+    vid_path = folder + '/' + img_path + '.MOV'
+    return vid_path
 
 def get_name_extention(path):
     path=path.split('/')
@@ -59,34 +50,20 @@ def get_name_extention(path):
     s = s.split('.')
     return s[0]
 
-def get_action(folder_path,save_path):
+def action(folder_path, save_path, base_folder = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data'):
     list_img_paths = os.listdir(folder_path)
     for img_path in list_img_paths:
         minu,sec = get_min_sec(img_path)
         name_extention = get_name_extention(img_path)
         name = minu+'_'+sec+'_'+name_extention+'.png'
         minu,sec = eval(minu),eval(sec)
-        vid_path = get_vid_path(img_path,get_paths())
+        vid_path = base_folder + '/' + get_vid_path(img_path)
         save_img(vid_path,minu,sec,save_path,name)
-        
-        # pdb.set_trace()
-
-
 
 def main():
-    # path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/210716/210716_I2O_S5_U2_DJI0006.MOV'
-    # base_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/images_2/'
-    # minutes = 2
-    # seconds = 43
-    # path_2 = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/Pacman/220813_I2F_S4_U3_DJI0008.MOV_00_03_28_vlc00002.png'
-    # name = str(minutes)+'_'+str(seconds)+'_220813'
-    # minu,sec = get_min_sec(path_2)
-    # minu,sec = eval(minu),eval(sec)
-    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/Pacman'
+    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/snapshots/220811/Scarlett'
     save_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/save_path'
-
-    get_action(folder_path,save_path)
-    
+    action(folder_path,save_path)
 
 if __name__ == '__main__':
     main()
