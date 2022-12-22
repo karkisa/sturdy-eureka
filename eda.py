@@ -7,7 +7,7 @@ def save_img(path,minutes,seconds,base_path,name):
     fps = vid_ca.get(cv2.CAP_PROP_FPS)
     # frame_id = int(fps*(minutes*60 + seconds))
     # vid_ca.set(cv2.CAP_PROP_POS_FRAMES, frame_id)
-    t_msec = 1000*(minutes*60 + seconds)
+    t_msec = 1000*(minutes*60 + seconds  )
     vid_ca.set(cv2.CAP_PROP_POS_MSEC, t_msec)
     _,frame = vid_ca.read()
     cv2.imwrite(base_path+'/'+name,frame)
@@ -55,15 +55,17 @@ def action(folder_path, save_path, base_folder = '/Users/sagar/Desktop/AI Cap/st
     for img_path in list_img_paths:
         minu,sec = get_min_sec(img_path)
         name_extention = get_name_extention(img_path)
+        save_dest = save_path+'/'+name_extention.split('_')[0]
         name = minu+'_'+sec+'_'+name_extention+'.png'
         minu,sec = eval(minu),eval(sec)
         vid_path = base_folder + '/' + get_vid_path(img_path)
-        save_img(vid_path,minu,sec,save_path,name)
+        save_img(vid_path,minu,sec,save_dest,name)
 
 def main():
-    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/snapshots/220901/Scarlett'
+    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/snapshots/220904/Orange Knuckles'
     save_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/save_path'
     action(folder_path,save_path)
+    
 
 if __name__ == '__main__':
     main()
