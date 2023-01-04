@@ -1,6 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
-import pdb,os
+import pdb,os,shutil
+import numpy as np
 
 def save_img(path,minutes,seconds,base_path,name):
     vid_ca = cv2.VideoCapture(path)
@@ -61,11 +62,54 @@ def action(folder_path, save_path, base_folder = '/Users/sagar/Desktop/AI Cap/st
         vid_path = base_folder + '/' + get_vid_path(img_path)
         save_img(vid_path,minu,sec,save_dest,name)
 
-def main():
-    folder_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/snapshots/220904/Orange Knuckles'
-    save_path = '/Users/sagar/Desktop/AI Cap/sturdy-eureka/data/save_path'
-    action(folder_path,save_path)
-    
+def distribut_images(source_folder,defst_folder):
+    list_files = os.listdir(source_folder)
+    for file in list_files:
+        # if np.random.uniform()<0.20:
+        if file[-1]=='g':
+            src=source_folder+'/'+file
+            dest = defst_folder + '/' + file 
+            shutil.move(src,dest)
 
+def move_labels(img_folder,label_base_folder,move_label_folder):
+    list_files = os.listdir(img_folder)
+    for file in list_files:
+        name = file.split('.')[0]
+        name = name + '.txt'
+        path = label_base_folder + "/" + name
+        dest = move_label_folder +'/'+ name
+        if os.path.exists(path):
+            shutil.move(path , dest)
+
+def read_vid_and_save_in_folder(vid_path,parent_folder = '/nfs/hpc/share/karkisa/AI cap/sturdy-eureka/yolo_training_data/test_data/210914'):
+    vid_ca = cv2.VideoCapture(vid_path)
+    extention = get_name_extention(vid_path)
+    save_folder =parent_folder + '/' + extention
+    os.mkdir(save_folder)
+    count = 0
+    time_skips = 3000             # fps is 29.9 .i.e almost 30
+    while vid_ca.isOpened():
+        count+=1
+        t_msec = 1000*(count)
+        vid_ca.set(cv2.CAP_PROP_POS_MSEC, t_msec)
+        ret, frame = vid_ca.read()
+        name = str(count)+'_'+ extention +'.png'
+        if ret :
+
+            cv2.imwrite(save_folder+'/'+name,frame)
+            if count%60==0:
+                print(count)
+
+        else : break
+
+def main(): 
+    base_folder =  '/nfs/hpc/share/karkisa/AI_Cap/sturdy-eureka/yolo_training_data/vid/210831'
+    save_folder =  '/nfs/hpc/share/karkisa/AI_Cap/sturdy-eureka/yolo_training_data/test_data/210831'
+    list_p = os.listdir(base_folder)
+    list_p = [os.path.join(base_folder,p) for p in list_p]
+    
+    for vid_path in list_p:
+        read_vid_and_save_in_folder(vid_path,save_folder)
+    
 if __name__ == '__main__':
     main()
